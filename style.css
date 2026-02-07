@@ -1,0 +1,210 @@
+
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background: #5f41e4;
+}
+
+.container {
+    background: #fff;
+    max-width: 425px;
+    flex-grow: 30;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    /* box-shadow:  h-offset v-offset blur spread color; */
+    box-shadow: 0 10 20px rgba(0, 0, 0, 0.1);
+}
+
+.search-section {
+    display: flex;
+    padding: 25px;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.search-section .input-wrapper {
+    display: flex;
+    height: 54px;
+    width: 100%;
+    position: relative;
+}
+
+.search-section .input-wrapper span {
+    position: absolute;
+    top: 50%;
+    left: 17px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+/* browser default font size is 16px (1rem = 16px) */
+
+.search-section .search-input {
+    height: 100%;
+    width: 100%;
+    font-size: 1rem;
+    outline: none;
+    font-weight: 500;
+    text-transform: uppercase;
+    border: 1px solid #beb0ff;
+    border-radius: 6px;
+    padding: 0 20px 0 50px;
+    transition:  0.3s ease; /* property duration timing-function delay */
+}
+
+.search-section .search-input:focus {
+    border-color: #5f41e4;
+}
+
+.search-section .search-input::placeholder {
+    text-transform: none;
+}
+
+.search-section .location-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 54px;
+    width: 56px;
+    flex-shrink: 0;
+    color: #5f41e4;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid #beb0ff;
+    border-radius: 6px;
+    background: #fff;
+    transition: 0.3s ease;
+}
+
+.search-section .location-button:hover {
+    color: #fff;
+    background: #5f41e4;
+    border-color: #5f41e4;
+}
+
+.search-section .location-button span {
+    font-size: 1.3rem;
+}
+
+.no-results {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%,-50%);
+    padding: 40px;
+    align-items: center;
+    justify-content: center;
+    display: none;
+    flex-direction: column;
+}
+
+body.show-no-results .no-results {
+    display: flex;
+}
+
+.no-results .title {
+    margin: 25px 0 15px;
+}
+
+.no-results .message {
+    font-weight: 500;
+}
+
+body.show-no-results .weather-section {
+    visibility: hidden;
+}
+
+.weather-section .current-weather {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0 50px;
+}
+
+.current-weather .weather-icon {
+    width: 140px;
+    aspect-ratio: 1;
+}
+
+.current-weather .temperature {
+    display: flex;
+    font-size: 3.38rem;
+    margin: 23px 0;
+}
+
+.current-weather .temperature span {
+    font-size: 1.56rem;
+    font-weight: 500;
+    margin: 5px 0 0 2px;
+}
+
+.current-weather .description {
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.hourly-weather {
+    padding: 16px 25px;
+    border-top: 1px solid #d5ccff;
+}
+
+.hourly-weather .weather-list {
+    display: flex;
+    list-style: none;
+    gap: 38px;
+    overflow-x: auto;
+    padding-bottom: 16px;
+    margin-bottom: -16px;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+.hourly-weather:hover .weather-list {
+    scrollbar-color: #bfbfbf transparent;
+}
+
+.weather-list .weather-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+}
+
+.hourly-weather .weather-item .weather-icon {
+    width: 28px;
+    aspect-ratio: 1;
+}
+
+/* Responsive media query code for small screen */
+@media screen and (max-width: 624px) {
+    body {
+        padding: 15px;
+    }
+
+    .search-section {
+        padding: 20px;
+    }
+
+    .hourly-weather {
+        padding: 16px 20px;
+    }
+
+    .hourly-weather .weather-list {
+        gap: 32px;
+    }
+}
