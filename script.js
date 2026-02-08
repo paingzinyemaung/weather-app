@@ -1,5 +1,6 @@
 const searchInput = document.querySelector(".search-input");
 const currentWeather = document.querySelector(".current-weather");
+const hourlyWeather = document.querySelector(".hourly-weather .weather-list");
 
 // Weather codes for mapping to custom icons
 const weatherCodes = {
@@ -15,21 +16,49 @@ const weatherCodes = {
 
 const API_KEY = "8c137235d9b14689a8b75807263001";
 
+const displayHourlyForecast = (hourlyData) => {
+    const currentHours = new Date().setMinutes(0, 0, 0);
+    const next24Hours = currentHours + 24 * 60 * 60 * 1000;
+    
+    const next24HoursData = hourlyData.filter(({time}) => {
+        const forecastTime = new Date(time).getTime();
+        return forecastTime > currentHours && forecastTime <= next24Hours;
+    });
+    console.log(next24HoursData);
+    
+    hourlyWeather.innerHTML = next24HoursData.map( item => {
+        const temperature = Math.floor(item.temp_c);
+        const time = item.time.split(" ")[1].substring(0, 5);
+        const weatherIcon = Object.keys(weatherCodes).find( icon => weatherCodes[icon].includes(item.condition.code));
+        return `<li class="weather-item">
+                    <p class="item">${time}</p>
+                    <img src="icons/${weatherIcon}.svg" class="weather-icon" alt="" srcset="">
+                    <p class="temperature">${temperature}°</p>
+            </li>`;
+    }).join(" ");
+    
+}
+
+
 const getWeatherDetails = async(API_URL) => {
     try {
         const response = await fetch(API_URL);
         const data = await response.json();
-        console.log(data);  
+        // console.log(data);  
 
-        const temperature = data.current.temp_c;
+        const temperature = Math.floor(data.current.temp_c);
         const description = data.current.condition.text;
         const weatherIcon = Object.keys(weatherCodes).find( icon => weatherCodes[icon].includes(data.current.condition.code));
-        console.log(temperature, description);
+        // console.log(temperature, description);
 
         currentWeather.querySelector(".weather-icon").src = `icons/${weatherIcon}.svg`;
         currentWeather.querySelector(".temperature").innerHTML = `${temperature}<span>°C</span>`;
         currentWeather.querySelector(".description").innerText = `${description}`;
-          
+
+        const combineHourlyData = [...data.forecast.forecastday[0].hour, ...data.forecast.forecastday[1].hour];
+        // console.log(combineHourlyData);
+        displayHourlyForecast(combineHourlyData);
+
     }catch(error) {
         console.log("Error fetching weather data:", error); 
     }
