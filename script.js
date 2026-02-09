@@ -1,6 +1,7 @@
 const searchInput = document.querySelector(".search-input");
 const currentWeather = document.querySelector(".current-weather");
 const hourlyWeather = document.querySelector(".hourly-weather .weather-list");
+const locationBtn = document.querySelector(".location-button");
 
 // Weather codes for mapping to custom icons
 const weatherCodes = {
@@ -58,9 +59,11 @@ const getWeatherDetails = async(API_URL) => {
         const combineHourlyData = [...data.forecast.forecastday[0].hour, ...data.forecast.forecastday[1].hour];
         // console.log(combineHourlyData);
         displayHourlyForecast(combineHourlyData);
+        searchInput.value = data.location.name; // display city name in search input
 
     }catch(error) {
-        console.log("Error fetching weather data:", error); 
+        // console.log("Error fetching weather data:", error); 
+        document.body.classList.add("show-no-results");
     }
 }
 
@@ -69,9 +72,23 @@ const setupWeatherRequests = (cityName) => {
     getWeatherDetails(API_URL);
 }
 
+// search by current location
+locationBtn.addEventListener("click", () => {
+   navigator.geolocation.getCurrentPosition( position => {
+    const { latitude, longitude} = position.coords
+    const API_URL = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${latitude}, ${longitude}&days=2`;
+    getWeatherDetails(API_URL);
+}, error => {
+    alert("Location access denied. Please enable permissions to use this feature.");
+});
+});
+
+// search by specific city
 searchInput.addEventListener("keyup", (e) => {
     let cityName = searchInput.value.trim();
     if (e.key == "Enter" && cityName) {        
         setupWeatherRequests(cityName);
     }
 });
+
+setupWeatherRequests("Myanmar");
